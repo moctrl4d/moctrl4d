@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MoCtrl4D: Precise and Efficient Motion-Guided 4D Content Generation</title>
+    <!-- 引入Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- 引入FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Section 1: Title -->
+        <section id="title">
+            <video id="background-video" autoplay muted loop>
+                <source src="videos/bg_video/bg.mp4" type="video/mp4">
+            </video>
+            <div class="title-content">
+                <h1>MoCtrl4D: Precise and Efficient Motion-Guided 4D Content Generation</h1>
+            </div>
+        </section>
+
+        <!-- Section 2: Abstract -->
+        <section id="abstract">
+            <h2>Abstract</h2>
+            <div class="content-center-abstract">
+                <p>
+                    Promptable 4D generation is a crucial task with broad applicability across industries, thus has recently gained tremendous interest in research community. However, existing works remain predominantly limited to image and text conditioning, which neglect the nuances of motion controllability. To address this, we propose to use dynamic motion prompt defined by any number of point trajectories. To translate user intention into this motion representation, we design a user-friendly interface that allows users to intuitively input motion trajectories, bringing images to life through direct interaction. Unlike prior works, in leveraging prior knowledge of a base reconstruction model, our method integrates prompts without added modules, maintaining scalability and data efficiency without overhead, achieving a full forward pass in under a second. Furthermore, instead of relying on existing appearance-focused learning frameworks, which suffers from poor motion fidelity, we design a novel physically inspired \textit{Vector Consistency Loss (VCL)} function for explicit motion learning. Our quantitative and qualitative results show significant improvement in spatiotemporally-precise and expressive control.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+        <!-- <div class="container is-max-desktop"> -->
+            <!-- Method. -->
+            <div class="columns is-centered">
+            <div class="column is-full-width">
+                <h2 class="title is-3">Method</h2>
+
+                <!-- Interpolating. -->
+                <img src="./4dgen/figures/fig1.png" width="1200" class="interpolation-image" alt="Interpolate start reference image."/>
+        
+                <!-- <div class="container is-max-desktop"> -->
+                
+                <!-- <p>
+                MoCtrl4D accepts single image and motion prompt as inputs and generate 4D asset correspondingly. Motion prompt can be accepted by simple UI using intuitive mouse dragging. From the left, the input consists of four views. The main-view image (labeled “front”) is formed by temporally concatenating the static image with the intended trajectory images. The auxiliary-view images are duplications of the initial-frame images across time. The model is a U-Net architecture with interleaved ResNet blocks, multi-view attention, and temporal attention layers for 4D Gaussians prediction. Training uses two supervisory signals: (1) appearance losses computed against ground-truth RGB and alpha renderings from the dataset, and (2) geometric motion losses computed against ground-truth 3D point trajectories.
+                <br />
+                </p> -->
+
+                <div class="content-center-abstract">
+                <p>
+                    MoCtrl4D accepts single image and motion prompt as inputs and generate 4D asset correspondingly. Motion prompt can be accepted by simple UI using intuitive mouse dragging. From the left, the input consists of four views. The main-view image (labeled “front”) is formed by temporally concatenating the static image with the intended trajectory images. The auxiliary-view images are duplications of the initial-frame images across time. The model is a U-Net architecture with interleaved ResNet blocks, multi-view attention, and temporal attention layers for 4D Gaussians prediction. Training uses two supervisory signals: (1) appearance losses computed against ground-truth RGB and alpha renderings from the dataset, and (2) geometric motion losses computed against ground-truth 3D point trajectories.
+                </p>
+            <!-- </div> -->
+                </div>
+                <img src="./4dgen/figures/model_figure.png" width="1200" class="interpolation-image" alt="Interpolate start reference image."/>
+                <!-- <p>
+                Overview of Cross-Category Motion Transfer Module.
+                <br />
+                </p> -->
+                
+            <!--/ Interpolating. -->
+            </div>
+            </div>
+        <!-- </div> -->
+        </section>
+
+       
+        <!-- HUMANOID -->
+        <section class="hero is-small">
+            <h2>4D Generation</h2>
+            <div class="hero-body">
+                <!-- <div class="container is-max-desktop"> -->
+                <h2 class="title is-3" style="text-align: left;">Humanoid</h2>
+
+                <!-- <h2 class="title is-4" style="font-size: 24px; text-align: left;">Kirlia the Pokemon</h2> -->
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoid/eval_pred_images_ep30_sample142_000-15302ce6ab918b144f0834cf2a4d295a545000_chunk000_psnr19.922363.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move right hand</p> -->
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoid/eval_pred_images_ep30_sample168_000-15363d296cd7b6c4f8eb76fc0ae1b95c4b5000_chunk096_psnr18.611143.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move both hands</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoid/eval_pred_images_ep30_sample183_000-153a2ee17210c8b4e4886aabb32cd705154000_chunk000_psnr25.996960.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Raise both hands</p> -->
+                    </div>
+                </div>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample97_000-15248a24c2fe49742b68ed5504c54482a3a002_chunk000_psnr18.558811.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move right hand</p> -->
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample155_000-1532c524405f4d545f985dd81b0f1c41ef3000_chunk216_psnr21.582863.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move both hands</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample151_000-1532792af465bc54897bcf8ef1d015ecffe000_chunk648_psnr22.430676.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Raise both hands</p> -->
+                    </div>
+                </div>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample178_000-1539d3be7ffd8e64e308aab640d21a4d7a1000_chunk648_psnr22.560110.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move right hand</p> -->
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample192_000-153bda95cf07b804924a2345fc7be1e740d000_chunk000_psnr19.413290.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move both hands</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoidset3/eval_pred_images_ep30_sample207_000-1540bffc9d297954510a0742d7d2adca87d000_chunk000_psnr16.851208.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Raise both hands</p> -->
+                    </div>
+                </div>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample223_000-154362f49a586124b0eadf7e9f0e47030c4000_chunk288_psnr27.391100.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move right hand</p> -->
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample227_000-15442106670fd1744d191963db1fd43c688000_chunk048_psnr19.821062.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move both hands</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample235_000-1545b0b3d38c6d643a8b745e753bfb17f81000_chunk120_psnr19.284994.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Raise both hands</p> -->
+                    </div>
+                </div>
+
+                <!-- <h2 class="title is-4" style="font-size: 24px; text-align: left;">Kirlia the Pokemon</h2> -->
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoid\eval_pred_images_ep30_sample197_000-153d1e2181d7d084d4d8b856ced283701bf000_chunk000_psnr19.731625.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move right hand</p> -->
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoid\eval_pred_images_ep30_sample101_000-15252d0fb3db6b3469f83afb38f7e256b7b000_chunk288_psnr21.325066.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move both hands</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoid\eval_pred_images_ep30_sample124_000-152b535b246b768405fa21ac49899a36762000_chunk408_psnr22.949387.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Raise both hands</p> -->
+                    </div>
+
+                   
+                </div>
+                <!-- </div> -->
+                <!-- <h2 class="title is-4" style="font-size: 24px; text-align: left;">Kirlia the Pokemon</h2> -->
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset2\eval_pred_images_ep30_sample47_000-151b2cc1952e28e47a7ac47c0d783bb541b000_chunk024_psnr19.076944.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move right hand</p> -->
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset2\eval_pred_images_ep30_sample130_000-152d78b3ae9c88d420fbfa174054f7e3a9b000_chunk048_psnr19.469763.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Move both hands</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset2\eval_pred_images_ep30_sample142_000-1530584cd63616e4780ab1ac4d46fd285c2000_chunk024_psnr21.118345.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Raise both hands</p> -->
+                    </div>
+
+                   
+                </div>
+
+
+                <h2 class="title is-4" style="font-size: 24px; text-align: left;">Monsters</h2>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\monsterset3\eval_pred_images_ep30_sample35_000-151736eb3017300414186b15c4367f3ea63000_chunk000_psnr18.628193.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Kneel down, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animals\eval_pred_images_ep30_sample76_000-151f8ecf3f985d84be7b1cb5501f45bc688002_chunk072_psnr19.914190.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Stand, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animals\eval_pred_images_ep30_sample136_000-152ecf506f7a84c45a885407798ff5fc9a7000_chunk288_psnr21.896055.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Idle</p> -->
+                    </div>
+                </div>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animals\eval_pred_images_ep30_sample137_000-152f02ab6a839d4476eb6690a94f2c6809c000_chunk000_psnr20.252831.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Kneel down, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animals\eval_pred_images_ep30_sample160_000-1533fe739ed986e4de695624f2537bddbec000_chunk024_psnr19.020716.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Stand, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animals\eval_pred_images_ep30_sample201_000-153f1ad2a5893e7427cb4d7d18d582d8342000_chunk120_psnr20.346115.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Idle</p> -->
+                    </div>
+                </div>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\monsterset3\eval_pred_images_ep30_sample29_000-1515b9b7f91f53d49fc90b3b2fc5f278324000_chunk024_psnr22.081505.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Kneel down, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\monsterset3\eval_pred_images_ep30_sample105_000-1526c6efbf8942c4a9bb35d6ef8bbb0d71d000_chunk168_psnr21.327133.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Stand, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\humanoidset3\eval_pred_images_ep30_sample147_000-153260d89bd71df49cfaaf430e44da417fe000_chunk240_psnr25.279022.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Idle</p> -->
+                    </div>
+                </div>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animalsset2\eval_pred_images_ep30_sample119_000-152976a86f0a53e49ae82c5d3b24b6f4fc1000_chunk072_psnr21.114149.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Kneel down, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animalsset2\eval_pred_images_ep30_sample120_000-1529ebf62abf1fe4bbb8e7db319a24ecc48000_chunk120_psnr19.663937.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Stand, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\animalsset2\eval_pred_images_ep30_sample127_000-152cfc20c7729394919aa4db00b85449fe3000_chunk048_psnr22.090929.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Idle</p> -->
+                    </div>
+                </div>
+
+                <h2 class="title is-4" style="font-size: 24px; text-align: left;">Objects</h2>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\objects\eval_pred_images_ep30_sample117_000-152896aa8e996074ae58d7bc4a40587aa9a000_chunk096_psnr20.253414.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Kneel down, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\objects\eval_pred_images_ep30_sample122_000-152b282f296657644b8a03375884a2242a8000_chunk072_psnr22.389084.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Stand, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\objects\eval_pred_images_ep30_sample145_000-15323e5f41cdbbb4690b984b0fad21d0dbe000_chunk048_psnr20.788570.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Idle</p> -->
+                    </div>
+                </div>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\objects\eval_pred_images_ep30_sample87_000-15227e10d74b6f346a1b6a02ca0d8c410bc000_chunk024_psnr23.095478.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Kneel down, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\objects\eval_pred_images_ep30_sample117_000-1528aa47e5107bc422ba523231e569c5499000_chunk000_psnr22.511284.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Stand, drop arms</p> -->
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="4dgen\objects\eval_pred_images_ep30_sample239_000-15469bde44d6abe41f58240687a5f25a441000_chunk096_psnr19.098743.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Idle</p> -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MOTION VARIETY -->
+        <section class="hero is-small">
+            <div class="hero-body">
+                <!-- <div class="container is-max-desktop"> -->
+                <h2 class="title is-3" style="text-align: left;">Motion Variety</h2>
+
+                <h2 class="title is-4" style="font-size: 24px; text-align: left;">Kirlia the Pokemon</h2>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo1 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety/group1/eval_pred_images_ep30_sample256_000-1547ee173fe3fc54b78bb23f5b02bde7c29000_chunk120_psnr22.304981.mp4" type="video/mp4">
+                    </video>
+                    <p>Move right hand</p>
+                    </div>
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety/group1/eval_pred_images_ep30_sample259_000-1547ee173fe3fc54b78bb23f5b02bde7c29000_chunk768_psnr23.018091.mp4" type="video/mp4">
+                    </video>
+                    <p>Drop both hands</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety/group1/eval_pred_images_ep30_sample260_000-1547ee173fe3fc54b78bb23f5b02bde7c29000_chunk840_psnr22.813747.mp4" type="video/mp4">
+                    </video>
+                    <p>Raise both hands</p>
+                    </div>
+                </div>
+
+
+                <h2 class="title is-4" style="font-size: 24px; text-align: left;">A skeleton</h2>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety\group2\eval_pred_images_ep30_sample65_000-151e2c03d26c8264453ba9991aa89420f40000_chunk024_psnr19.539669.mp4" type="video/mp4">
+                    </video>
+                    <p>Kneel down, drop arms</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety\group2\eval_pred_images_ep30_sample66_000-151e2c03d26c8264453ba9991aa89420f40000_chunk096_psnr19.566090.mp4" type="video/mp4">
+                    </video>
+                    <p>Stand, drop arms</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety\group2\eval_pred_images_ep30_sample66_000-151e2c03d26c8264453ba9991aa89420f40000_chunk120_psnr20.407640.mp4" type="video/mp4">
+                    </video>
+                    <p>Idle</p>
+                    </div>
+                </div>
+
+                <h2 class="title is-4" style="font-size: 24px; text-align: left;">A dragon</h2>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety\group3\eval_pred_images_ep30_sample70_000-151ef72384761d943c48e2890f125b13f0c001_chunk024_psnr18.132305.mp4" type="video/mp4">
+                    </video>
+                    <p>Drop wings, step right</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety\group3\eval_pred_images_ep30_sample70_000-151ef72384761d943c48e2890f125b13f0c004_chunk000_psnr20.829744.mp4" type="video/mp4">
+                    </video>
+                    <p>Attack</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="motion_variety\group3\eval_pred_images_ep30_sample70_000-151ef72384761d943c48e2890f125b13f0c004_chunk024_psnr20.087326.mp4" type="video/mp4">
+                    </video>
+                    <p>Idle</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="hero is-small">
+            <div class="hero-body">
+                <!-- <div class="container is-max-desktop"> -->
+                <h2 class="title is-3">Simple User Interface</h2>
+                <!-- <h2 class="title is-4">"Hip-Hop Dancing"</h2> -->
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- Image -->
+                    <div style="text-align: center;">
+                    <!-- <img src="UI/bird.jpg" alt="Image" style="max-width: 256;"> -->
+                    <img src="UI/bird.jpg" width="300" alt="Image" style="max-width: 256;">
+                    <p>Image</p>
+                    </div>
+                    
+                    <!-- UI -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="UI/demo_ui.mp4" type="video/mp4">
+                    </video>
+                    <p>UI</p>
+                    </div>
+
+                    <!-- Ours -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="UI/result.mp4" type="video/mp4">
+                    </video>
+                    <p>Result</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="hero is-small">
+            <!-- <div class="hero-body"> -->
+                <!-- <div class="container is-max-desktop"> -->
+                <h2 class="title is-3">Ablation</h2>
+                <h2 class="title is-4" style="font-size: 24px; text-align: left;">L4GM tends to fade or predict inconsistent colors</h2>
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <p><b>L4GM</b></p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/eval_pred_images_ep30_sample124_000-151ef72384761d943c48e2890f125b13f0c004_chunk024_psnr20.567408.mp4" type="video/mp4">
+    
+                    </video>
+                    <p>Tail disappears</p>
+
+                    
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <p><b>MoCtrl4D</b></p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/0_compare_eval_pred_images_ep30_sample70_000-151ef72384761d943c48e2890f125b13f0c004_chunk024_psnr20.087326.mp4" type="video/mp4">
+                    </video>
+                    <p>Tail doesn't disappear</p>
+                    
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <p><b>L4GM</b></p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/eval_pred_images_ep30_sample185_000-15252d0fb3db6b3469f83afb38f7e256b7b000_chunk288_psnr22.252468.mp4" type="video/mp4">
+                    
+                    </video>
+                    <p>Right arm fades</p>
+
+                    
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <p><b>MoCtrl4D</b></p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample101_000-15252d0fb3db6b3469f83afb38f7e256b7b000_chunk288_psnr21.325066.mp4" type="video/mp4">
+                    </video>
+                    <p>Right arm doesn't fade</p>
+                    
+                    </div>
+                    
+                </div>
+                <hr>
+
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/eval_pred_images_ep30_sample194_000-1526c6efbf8942c4a9bb35d6ef8bbb0d71d000_chunk192_psnr18.158031.mp4" type="video/mp4">
+                    </video>
+                    <p>Cane disappears</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample105_000-1526c6efbf8942c4a9bb35d6ef8bbb0d71d000_chunk192_psnr18.204330.mp4" type="video/mp4">
+                    </video>
+                    <p>Cane doesn't disappears</p>
+
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/eval_pred_images_ep30_sample224_000-1529ebf62abf1fe4bbb8e7db319a24ecc48000_chunk120_psnr20.720882.mp4" type="video/mp4">
+                    </video>
+                    <p>Body color fades</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/0_compareeval_pred_images_ep30_sample120_000-1529ebf62abf1fe4bbb8e7db319a24ecc48000_chunk120_psnr19.663937.mp4" type="video/mp4">
+                    </video>
+                    <p>Body color doesn't fade</p>
+
+                    </div>
+                </div>
+                <hr>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/fade/eval_pred_images_ep30_sample53_000-151736eb3017300414186b15c4367f3ea63000_chunk000_psnr18.734943.mp4" type="video/mp4">
+                    </video>
+                    <p>Body color fades and mixes</p>
+
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/monsterset3/eval_pred_images_ep30_sample35_000-151736eb3017300414186b15c4367f3ea63000_chunk000_psnr18.628193.mp4" type="video/mp4">
+                    </video>
+                    <p>Body color remains clear</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/fade/eval_pred_images_ep30_sample135_000-151f8ecf3f985d84be7b1cb5501f45bc688002_chunk072_psnr19.644182.mp4" type="video/mp4">
+                    </video>
+                    <p>Left side colors mix</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample76_000-151f8ecf3f985d84be7b1cb5501f45bc688002_chunk072_psnr19.914190.mp4" type="video/mp4">
+                    </video>
+                    <p>Color mixing is less severe</p>
+                    </div>
+                </div>
+                <hr>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/fade/eval_pred_images_ep30_sample285_000-1532792af465bc54897bcf8ef1d015ecffe000_chunk648_psnr22.160692.mp4" type="video/mp4">
+                    </video>
+                    <p>Part of cane disappears</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoidset3/eval_pred_images_ep30_sample151_000-1532792af465bc54897bcf8ef1d015ecffe000_chunk648_psnr22.430676.mp4" type="video/mp4">
+                    </video>
+                    <p>Cane remains whole</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/fade/eval_pred_images_ep30_sample319_000-15363d296cd7b6c4f8eb76fc0ae1b95c4b5000_chunk096_psnr18.206604.mp4" type="video/mp4">
+                    </video>
+                    <p>Face colors fade</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoid/eval_pred_images_ep30_sample168_000-15363d296cd7b6c4f8eb76fc0ae1b95c4b5000_chunk096_psnr18.611143.mp4" type="video/mp4">
+                    </video>
+                    <p>Face colors remain</p>
+
+                    </div>
+                </div>
+                <hr>
+
+                <!-- <h2 class="title is-4" style="font-size: 24px; text-align: left;">L4GM tends to predict inconsistent colors</h2> -->
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/eval_pred_images_ep30_sample293_000-1532c524405f4d545f985dd81b0f1c41ef3000_chunk216_psnr21.243334.mp4" type="video/mp4">
+                    </video>
+                    <p>Back becomes black</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample155_000-1532c524405f4d545f985dd81b0f1c41ef3000_chunk216_psnr21.582863.mp4" type="video/mp4">
+                    </video>
+                    <p>Back remains green</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/eval_pred_images_ep30_sample288_000-15329de45a2d99c420f8af3ef9697e101a0000_chunk000_psnr16.807541.mp4" type="video/mp4">
+                    </video>
+                    <p>Back becomes black</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample152_000-15329de45a2d99c420f8af3ef9697e101a0000_chunk000_psnr17.335701.mp4" type="video/mp4">
+                    </video>
+                    <p>Back preserves cloth patterns</p>
+                    </div>
+                </div>
+                <hr>
+
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/inconsistent/eval_pred_images_ep30_sample227_000-152b282f296657644b8a03375884a2242a8000_chunk024_psnr20.981709.mp4" type="video/mp4">
+                    </video>
+                    <p>White parts colors mix</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample122_000-152b282f296657644b8a03375884a2242a8000_chunk024_psnr21.493502.mp4" type="video/mp4">
+                    </video>
+                    <p>White parts colors remain</p>
+                    </div>
+
+                    
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/inconsistent/eval_pred_images_ep30_sample233_000-152b535b246b768405fa21ac49899a36762000_chunk408_psnr21.637068.mp4" type="video/mp4">
+                    </video>
+                    <p>Back cloth patterns mix</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoid/eval_pred_images_ep30_sample124_000-152b535b246b768405fa21ac49899a36762000_chunk408_psnr22.949387.mp4" type="video/mp4">
+                    </video>
+                    <p>Back cloth patterns remain</p>
+                    </div>
+
+                </div>
+                <hr>
+
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/inconsistent/eval_pred_images_ep30_sample268_000-1530584cd63616e4780ab1ac4d46fd285c2000_chunk024_psnr18.391201.mp4" type="video/mp4">
+                    </video>
+                    <p>Back becomes darker</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/humanoidset2/eval_pred_images_ep30_sample142_000-1530584cd63616e4780ab1ac4d46fd285c2000_chunk024_psnr21.118345.mp4" type="video/mp4">
+                    </video>
+                    <p>Back remains purple</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/L4GM/others/eval_pred_images_ep30_sample287_000-1532792af465bc54897bcf8ef1d015ecffe000_chunk840_psnr18.651037.mp4" type="video/mp4">
+                    </video>
+                    <p>Gaussians break into parts</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./ablations/ours/eval_pred_images_ep30_sample152_000-1532792af465bc54897bcf8ef1d015ecffe000_chunk840_psnr18.401682.mp4" type="video/mp4">
+                    </video>
+                    <p>Gaussians remain</p>
+                    </div>
+                </div>
+                <hr>
+
+        
+            <section class="hero is-small">
+                <h2 class="title is-3">Comparisons</h2>
+                
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <p>MoCtrl4D</p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./8frames_1win/eval_pred_images_ep30_sample426_000-151ef72384761d943c48e2890f125b13f0c004_chunk024_psnr21.411116.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <p>SP4D</p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/SP4D/000-151_ef72384761d943c48e2890f125b13f0callviews.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <p>LASR</p>
+                    <video width="500" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/video-output-63AA8914-0E54-4C72-954F-15E9FBB563EE-1.mp4" type="video/mp4">
+                    </video>
+                    </div>
+                </div>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <!-- <p>MoCtrl4D</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./8frames_1win/eval_pred_images_ep30_sample768_000-1528aa47e5107bc422ba523231e569c5499000_chunk000_psnr25.549267.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <!-- <p>SP4D</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/SP4D/000-152_8aa47e5107bc422ba523231e569c5499allviews.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <!-- <p>LASR</p> -->
+                    <video width="500" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/video-output-6A014F80-467A-4DF3-AE99-83634045A367-1.mp4" type="video/mp4">
+                    </video>
+                    </div>
+                </div>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <!-- <p>MoCtrl4D</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./8frames_1win/eval_pred_images_ep30_sample819_000-152b535b246b768405fa21ac49899a36762000_chunk408_psnr22.800444.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <!-- <p>SP4D</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/SP4D/000-152_b535b246b768405fa21ac49899a36762allviews.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <!-- <p>LASR</p> -->
+                    <video width="500" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/video-output-AEA5818A-2C97-4296-B883-9D20E09FE858-1.mp4" type="video/mp4">
+                    </video>
+                    </div>
+                </div>
+                <p>Note that SP4D was trained to accept 4 frames. SP4D results here are concatenation of 2 times inference of 4-frame SP4D to obtain 8 frames.</p>
+
+        </section>
+
+        <section class="hero is-small">
+                <h2 class="title is-3">Failure cases</h2>
+                
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/failure_cases/eval_pred_images_ep30_sample186_000-153af87017501fc44e39a33c220f2435100000_chunk000_psnr14.806660.mp4" type="video/mp4">
+                    </video>
+                    <p>Gaussians disconnect</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/failure_cases/eval_pred_images_ep30_sample188_000-153b3326c590dd74668a9bbbd1132ba5ad3000_chunk048_psnr22.228508.mp4" type="video/mp4">
+                    </video>
+                    <p>Gaussians fly out</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/failure_cases/eval_pred_images_ep30_sample194_000-153be5c4f71810e43b0a48f1971dcd10703004_chunk024_psnr16.352282.mp4" type="video/mp4">
+                    </video>
+                    <p>Gaussians fly out</p>
+                    </div>
+                </div>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/failure_cases/eval_pred_images_ep30_sample195_000-153c376de0ae77c4d03a94987cc752dae61000_chunk168_psnr21.151596.mp4" type="video/mp4">
+                    </video>
+                    <p>Left hand cannot separate correctly</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/failure_cases/eval_pred_images_ep30_sample200_000-153ef6b67c6617c4e4f83d7b6b713ae036b000_chunk000_psnr14.918504.mp4">
+                    </video>
+                    <p>Gaussians fly out</p>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./4dgen/failure_cases/eval_pred_images_ep30_sample29_000-1515b27f529875d4d4c9c7660bd38f1cc12000_chunk072_psnr17.241016.mp4" type="video/mp4">
+                    </video>
+                    <p>Object cannot separate correctly</p>
+                    </div>
+                </div>
+        </section>
