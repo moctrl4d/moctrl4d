@@ -503,6 +503,42 @@
         <section class="hero is-small">
             <div class="hero-body">
                 <!-- <div class="container is-max-desktop"> -->
+                <h2 class="title is-3">Handling longer prompts</h2>
+                <p>Longer motion prompts are supported by using extended input-frame sequences and autoregression. We experiment with up to 16 input frames at inference. When combined with 4 autoregressive windows, this setup can generate an 8-second 4D asset, which is of practical use. Videos generated with this method are shown below:</p>
+                <!-- <h2 class="title is-4">"Hip-Hop Dancing"</h2> -->
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- Image -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./16frames_4wins/eval_pred_images_ep30_sample322_000-15337c18ce9bd8445cd9f43e9428fcc6573000_chunk216_psnr23.322903.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>UI</p> -->
+                    </div>
+                    
+                    <!-- UI -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./16frames_4wins/eval_pred_images_ep30_sample296_000-1532c524405f4d545f985dd81b0f1c41ef3000_chunk072_psnr20.885303.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>UI</p> -->
+                    </div>
+
+                    <!-- Ours -->
+                    <div style="text-align: center;">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./16frames_4wins/eval_pred_images_ep30_sample311_000-15332e695ec106b4273ae70efc70cddf470000_chunk000_psnr24.269344.mp4" type="video/mp4">
+                    </video>
+                    <!-- <p>Result</p> -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="hero is-small">
+            <div class="hero-body">
+                <!-- <div class="container is-max-desktop"> -->
                 <h2 class="title is-3">Simple User Interface</h2>
                 <!-- <h2 class="title is-4">"Hip-Hop Dancing"</h2> -->
                 <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
@@ -817,13 +853,14 @@
 
         
             <section class="hero is-small">
-                <h2 class="title is-3">Comparisons</h2>
+                <h2 class="title is-3">4D Generation Comparisons</h2>
+                <p>Note that only MoCtrl4D takes initial images with motion prompts as input, whereas SP4D and LASR are reconstruction methods that take RGB videos as input without the ability to accept motion prompt.</p>
                 
                 <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
                     
                     <!-- vdo2 -->
                     <div style="text-align: center;">
-                    <p>MoCtrl4D</p>
+                    <p><b>MoCtrl4D</b></p>
                     <video width="300" autoplay controls muted loop>
                         <source src="./8frames_1win/eval_pred_images_ep30_sample426_000-151ef72384761d943c48e2890f125b13f0c004_chunk024_psnr21.411116.mp4" type="video/mp4">
                     </video>
@@ -831,7 +868,7 @@
 
                     <!-- vdo3 -->
                     <div style="text-align: center;">
-                    <p>SP4D</p>
+                    <p><b>SP4D</b></p>
                     <video width="300" autoplay controls muted loop>
                         <source src="./comparisons/SP4D/000-151_ef72384761d943c48e2890f125b13f0callviews.mp4" type="video/mp4">
                     </video>
@@ -839,9 +876,9 @@
 
                     <!-- vdo3 -->
                     <div style="text-align: center;">
-                    <p>LASR</p>
-                    <video width="500" autoplay controls muted loop>
-                        <source src="./comparisons/LASR/video-output-63AA8914-0E54-4C72-954F-15E9FBB563EE-1.mp4" type="video/mp4">
+                    <p><b>LASR</b></p>
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/000-151_ef72384761d943c48e2890f125b13f0c-5_merged_rotate.mp4" type="video/mp4">
                     </video>
                     </div>
                 </div>
@@ -867,8 +904,8 @@
                     <!-- vdo3 -->
                     <div style="text-align: center;">
                     <!-- <p>LASR</p> -->
-                    <video width="500" autoplay controls muted loop>
-                        <source src="./comparisons/LASR/video-output-6A014F80-467A-4DF3-AE99-83634045A367-1.mp4" type="video/mp4">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/000-152_8aa47e5107bc422ba523231e569c5499-5_merged_rotate.mp4" type="video/mp4">
                     </video>
                     </div>
                 </div>
@@ -894,12 +931,39 @@
                     <!-- vdo3 -->
                     <div style="text-align: center;">
                     <!-- <p>LASR</p> -->
-                    <video width="500" autoplay controls muted loop>
-                        <source src="./comparisons/LASR/video-output-AEA5818A-2C97-4296-B883-9D20E09FE858-1.mp4" type="video/mp4">
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/000-152_b535b246b768405fa21ac49899a36762-5_merged_rotate.mp4" type="video/mp4">
                     </video>
                     </div>
                 </div>
-                <p>Note that SP4D was trained to accept 4 frames. SP4D results here are concatenation of 2 times inference of 4-frame SP4D to obtain 8 frames.</p>
+
+                <div id="results-carousel" class="carousel results-carousel" style="display: flex; justify-content: space-around; align-items: center;">
+                    
+                    <!-- vdo2 -->
+                    <div style="text-align: center;">
+                    <!-- <p>MoCtrl4D</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/gorilla2.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <!-- <p>SP4D</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/SP4D/000-152_9ebf62abf1fe4bbb8e7db319a24ecc48allviews.mp4" type="video/mp4">
+                    </video>
+                    </div>
+
+                    <!-- vdo3 -->
+                    <div style="text-align: center;">
+                    <!-- <p>LASR</p> -->
+                    <video width="300" autoplay controls muted loop>
+                        <source src="./comparisons/LASR/000-152_9ebf62abf1fe4bbb8e7db319a24ecc48-5_merged_rotate.mp4" type="video/mp4">
+                    </video>
+                    </div>
+                </div>
+                <p>Note: SP4D was trained on 4-frame inputs. For SP4D, the 8-frame results shown here were generated by concatenating the outputs of two separate 4-frame inferences.</p>
 
         </section>
 
